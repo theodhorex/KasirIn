@@ -78,6 +78,9 @@ Public Class FrmLogin
 
                     reader.Close()
                     connection.Close()
+
+                    LogHelper.CatatLog("Login", "User " & SessionHelper.Username & " berhasil login")
+
                     MsgBox("Login berhasil! Selamat datang, " & SessionHelper.NamaLengkap, MsgBoxStyle.Information, "Success")
                     Me.DialogResult = DialogResult.OK
                     Me.Close()
