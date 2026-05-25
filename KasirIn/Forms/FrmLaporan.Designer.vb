@@ -55,6 +55,45 @@ Partial Class FrmLaporan
         Me.lblVoidSampai = New System.Windows.Forms.Label()
         Me.dtpVoidDari = New System.Windows.Forms.DateTimePicker()
         Me.lblVoidDari = New System.Windows.Forms.Label()
+        Me.tabNeraca = New System.Windows.Forms.TabPage()
+        Me.pnlNeracaFilter = New System.Windows.Forms.Panel()
+        Me.btnPrintNeraca = New System.Windows.Forms.Button()
+        Me.btnExportNeraca = New System.Windows.Forms.Button()
+        Me.btnHitungNeraca = New System.Windows.Forms.Button()
+        Me.dtpNeracaSampai = New System.Windows.Forms.DateTimePicker()
+        Me.lblNeracaSampai = New System.Windows.Forms.Label()
+        Me.dtpNeracaDari = New System.Windows.Forms.DateTimePicker()
+        Me.lblNeracaDari = New System.Windows.Forms.Label()
+        Me.pnlNeracaContent = New System.Windows.Forms.Panel()
+        Me.lblNeracaVoidSub = New System.Windows.Forms.Label()
+        Me.lblNeracaVoid = New System.Windows.Forms.Label()
+        Me.pnlNeracaCard6 = New System.Windows.Forms.Panel()
+        Me.lblNeracaLabaBersih = New System.Windows.Forms.Label()
+        Me.pnlNeracaCard5 = New System.Windows.Forms.Panel()
+        Me.lblNeracaPengeluaran = New System.Windows.Forms.Label()
+        Me.btnKelolaPengeluaran = New System.Windows.Forms.Button()
+        Me.pnlNeracaCard4 = New System.Windows.Forms.Panel()
+        Me.lblNeracaLabaKotorSub = New System.Windows.Forms.Label()
+        Me.lblNeracaLabaKotor = New System.Windows.Forms.Label()
+        Me.pnlNeracaCard3 = New System.Windows.Forms.Panel()
+        Me.lblNeracaHPPSub = New System.Windows.Forms.Label()
+        Me.lblNeracaHPP = New System.Windows.Forms.Label()
+        Me.pnlNeracaCard2 = New System.Windows.Forms.Panel()
+        Me.lblNeracaPendapatanSub = New System.Windows.Forms.Label()
+        Me.lblNeracaPendapatan = New System.Windows.Forms.Label()
+        Me.pnlNeracaCard1 = New System.Windows.Forms.Panel()
+        Me.tabLog = New System.Windows.Forms.TabPage()
+        Me.pnlLogFilter = New System.Windows.Forms.Panel()
+        Me.btnExportLog = New System.Windows.Forms.Button()
+        Me.btnTampilkanLog = New System.Windows.Forms.Button()
+        Me.cmbFilterAksi = New System.Windows.Forms.ComboBox()
+        Me.lblFilterAksi = New System.Windows.Forms.Label()
+        Me.dtpLogSampai = New System.Windows.Forms.DateTimePicker()
+        Me.lblLogSampai = New System.Windows.Forms.Label()
+        Me.dtpLogDari = New System.Windows.Forms.DateTimePicker()
+        Me.lblLogDari = New System.Windows.Forms.Label()
+        Me.dgvLog = New System.Windows.Forms.DataGridView()
+        Me.lblLogSummary = New System.Windows.Forms.Label()
         Me.tabControl.SuspendLayout()
         Me.tabPenjualan.SuspendLayout()
         Me.pnlDetail.SuspendLayout()
@@ -73,6 +112,8 @@ Partial Class FrmLaporan
         Me.tabControl.Controls.Add(Me.tabPenjualan)
         Me.tabControl.Controls.Add(Me.tabStok)
         Me.tabControl.Controls.Add(Me.tabVoid)
+        Me.tabControl.Controls.Add(Me.tabNeraca)
+        Me.tabControl.Controls.Add(Me.tabLog)
         Me.tabControl.Dock = System.Windows.Forms.DockStyle.Fill
         Me.tabControl.Location = New System.Drawing.Point(0, 0)
         Me.tabControl.Name = "tabControl"
@@ -440,6 +481,418 @@ Partial Class FrmLaporan
         Me.btnVoid.UseVisualStyleBackColor = False
         Me.btnVoid.Visible = False
 
+        Me.tabNeraca.Controls.Add(Me.pnlNeracaContent)
+        Me.tabNeraca.Controls.Add(Me.pnlNeracaFilter)
+        Me.tabNeraca.Location = New System.Drawing.Point(4, 24)
+        Me.tabNeraca.Name = "tabNeraca"
+        Me.tabNeraca.Padding = New System.Windows.Forms.Padding(10)
+        Me.tabNeraca.Size = New System.Drawing.Size(1092, 652)
+        Me.tabNeraca.TabIndex = 3
+        Me.tabNeraca.Text = "Neraca Keuangan"
+        Me.tabNeraca.UseVisualStyleBackColor = True
+
+        Me.pnlNeracaFilter.BackColor = System.Drawing.Color.FromArgb(CType(249, Byte), CType(250, Byte), CType(251, Byte))
+        Me.pnlNeracaFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlNeracaFilter.Controls.Add(Me.btnPrintNeraca)
+        Me.pnlNeracaFilter.Controls.Add(Me.btnExportNeraca)
+        Me.pnlNeracaFilter.Controls.Add(Me.btnHitungNeraca)
+        Me.pnlNeracaFilter.Controls.Add(Me.dtpNeracaSampai)
+        Me.pnlNeracaFilter.Controls.Add(Me.lblNeracaSampai)
+        Me.pnlNeracaFilter.Controls.Add(Me.dtpNeracaDari)
+        Me.pnlNeracaFilter.Controls.Add(Me.lblNeracaDari)
+        Me.pnlNeracaFilter.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlNeracaFilter.Location = New System.Drawing.Point(10, 10)
+        Me.pnlNeracaFilter.Name = "pnlNeracaFilter"
+        Me.pnlNeracaFilter.Padding = New System.Windows.Forms.Padding(15)
+        Me.pnlNeracaFilter.Size = New System.Drawing.Size(1072, 70)
+        Me.pnlNeracaFilter.TabIndex = 0
+
+        Me.lblNeracaDari.AutoSize = True
+        Me.lblNeracaDari.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.lblNeracaDari.Location = New System.Drawing.Point(15, 15)
+        Me.lblNeracaDari.Name = "lblNeracaDari"
+        Me.lblNeracaDari.Size = New System.Drawing.Size(70, 15)
+        Me.lblNeracaDari.TabIndex = 0
+        Me.lblNeracaDari.Text = "Dari Tanggal"
+
+        Me.dtpNeracaDari.Format = System.Windows.Forms.DateTimePickerFormat.Short
+        Me.dtpNeracaDari.Location = New System.Drawing.Point(15, 33)
+        Me.dtpNeracaDari.Name = "dtpNeracaDari"
+        Me.dtpNeracaDari.Size = New System.Drawing.Size(120, 23)
+        Me.dtpNeracaDari.TabIndex = 1
+
+        Me.lblNeracaSampai.AutoSize = True
+        Me.lblNeracaSampai.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.lblNeracaSampai.Location = New System.Drawing.Point(150, 15)
+        Me.lblNeracaSampai.Name = "lblNeracaSampai"
+        Me.lblNeracaSampai.Size = New System.Drawing.Size(85, 15)
+        Me.lblNeracaSampai.TabIndex = 2
+        Me.lblNeracaSampai.Text = "Sampai Tanggal"
+
+        Me.dtpNeracaSampai.Format = System.Windows.Forms.DateTimePickerFormat.Short
+        Me.dtpNeracaSampai.Location = New System.Drawing.Point(150, 33)
+        Me.dtpNeracaSampai.Name = "dtpNeracaSampai"
+        Me.dtpNeracaSampai.Size = New System.Drawing.Size(120, 23)
+        Me.dtpNeracaSampai.TabIndex = 3
+
+        Me.btnHitungNeraca.BackColor = System.Drawing.Color.FromArgb(CType(37, Byte), CType(99, Byte), CType(235, Byte))
+        Me.btnHitungNeraca.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnHitungNeraca.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold)
+        Me.btnHitungNeraca.ForeColor = System.Drawing.Color.White
+        Me.btnHitungNeraca.Location = New System.Drawing.Point(285, 33)
+        Me.btnHitungNeraca.Name = "btnHitungNeraca"
+        Me.btnHitungNeraca.Size = New System.Drawing.Size(90, 23)
+        Me.btnHitungNeraca.TabIndex = 4
+        Me.btnHitungNeraca.Text = "Hitung"
+        Me.btnHitungNeraca.UseVisualStyleBackColor = False
+
+        Me.btnExportNeraca.BackColor = System.Drawing.Color.FromArgb(CType(34, Byte), CType(197, Byte), CType(94, Byte))
+        Me.btnExportNeraca.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnExportNeraca.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold)
+        Me.btnExportNeraca.ForeColor = System.Drawing.Color.White
+        Me.btnExportNeraca.Location = New System.Drawing.Point(385, 33)
+        Me.btnExportNeraca.Name = "btnExportNeraca"
+        Me.btnExportNeraca.Size = New System.Drawing.Size(100, 23)
+        Me.btnExportNeraca.TabIndex = 5
+        Me.btnExportNeraca.Text = "Export Excel"
+        Me.btnExportNeraca.UseVisualStyleBackColor = False
+
+        Me.btnPrintNeraca.BackColor = System.Drawing.Color.FromArgb(CType(107, Byte), CType(114, Byte), CType(128, Byte))
+        Me.btnPrintNeraca.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnPrintNeraca.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold)
+        Me.btnPrintNeraca.ForeColor = System.Drawing.Color.White
+        Me.btnPrintNeraca.Location = New System.Drawing.Point(495, 33)
+        Me.btnPrintNeraca.Name = "btnPrintNeraca"
+        Me.btnPrintNeraca.Size = New System.Drawing.Size(80, 23)
+        Me.btnPrintNeraca.TabIndex = 6
+        Me.btnPrintNeraca.Text = "Print"
+        Me.btnPrintNeraca.UseVisualStyleBackColor = False
+
+        Me.pnlNeracaContent.AutoScroll = True
+        Me.pnlNeracaContent.BackColor = System.Drawing.Color.FromArgb(CType(243, Byte), CType(244, Byte), CType(246, Byte))
+        Me.pnlNeracaContent.Controls.Add(Me.pnlNeracaCard6)
+        Me.pnlNeracaContent.Controls.Add(Me.pnlNeracaCard5)
+        Me.pnlNeracaContent.Controls.Add(Me.pnlNeracaCard4)
+        Me.pnlNeracaContent.Controls.Add(Me.pnlNeracaCard3)
+        Me.pnlNeracaContent.Controls.Add(Me.pnlNeracaCard2)
+        Me.pnlNeracaContent.Controls.Add(Me.pnlNeracaCard1)
+        Me.pnlNeracaContent.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.pnlNeracaContent.Location = New System.Drawing.Point(10, 80)
+        Me.pnlNeracaContent.Name = "pnlNeracaContent"
+        Me.pnlNeracaContent.Padding = New System.Windows.Forms.Padding(15)
+        Me.pnlNeracaContent.Size = New System.Drawing.Size(1072, 562)
+        Me.pnlNeracaContent.TabIndex = 1
+
+        Me.pnlNeracaCard1.BackColor = System.Drawing.Color.White
+        Me.pnlNeracaCard1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlNeracaCard1.Location = New System.Drawing.Point(15, 15)
+        Me.pnlNeracaCard1.Name = "pnlNeracaCard1"
+        Me.pnlNeracaCard1.Padding = New System.Windows.Forms.Padding(15)
+        Me.pnlNeracaCard1.Size = New System.Drawing.Size(1042, 70)
+        Me.pnlNeracaCard1.TabIndex = 0
+
+        Dim lblCard1Title As New Label()
+        lblCard1Title.AutoSize = True
+        lblCard1Title.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        lblCard1Title.ForeColor = System.Drawing.Color.FromArgb(CType(107, Byte), CType(114, Byte), CType(128, Byte))
+        lblCard1Title.Location = New System.Drawing.Point(15, 10)
+        lblCard1Title.Name = "lblCard1Title"
+        lblCard1Title.Text = "Total Pendapatan Kotor"
+        Me.pnlNeracaCard1.Controls.Add(lblCard1Title)
+
+        Me.lblNeracaPendapatan.AutoSize = True
+        Me.lblNeracaPendapatan.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Bold)
+        Me.lblNeracaPendapatan.ForeColor = System.Drawing.Color.FromArgb(CType(34, Byte), CType(197, Byte), CType(94, Byte))
+        Me.lblNeracaPendapatan.Location = New System.Drawing.Point(15, 28)
+        Me.lblNeracaPendapatan.Name = "lblNeracaPendapatan"
+        Me.lblNeracaPendapatan.Text = "Rp 0"
+        Me.pnlNeracaCard1.Controls.Add(Me.lblNeracaPendapatan)
+
+        Me.lblNeracaPendapatanSub.AutoSize = True
+        Me.lblNeracaPendapatanSub.Font = New System.Drawing.Font("Segoe UI", 8.0!)
+        Me.lblNeracaPendapatanSub.ForeColor = System.Drawing.Color.FromArgb(CType(107, Byte), CType(114, Byte), CType(128, Byte))
+        Me.lblNeracaPendapatanSub.Location = New System.Drawing.Point(200, 35)
+        Me.lblNeracaPendapatanSub.Name = "lblNeracaPendapatanSub"
+        Me.lblNeracaPendapatanSub.Text = "0 transaksi"
+        Me.pnlNeracaCard1.Controls.Add(Me.lblNeracaPendapatanSub)
+
+        Me.pnlNeracaCard2.BackColor = System.Drawing.Color.White
+        Me.pnlNeracaCard2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlNeracaCard2.Location = New System.Drawing.Point(15, 95)
+        Me.pnlNeracaCard2.Name = "pnlNeracaCard2"
+        Me.pnlNeracaCard2.Padding = New System.Windows.Forms.Padding(15)
+        Me.pnlNeracaCard2.Size = New System.Drawing.Size(1042, 70)
+        Me.pnlNeracaCard2.TabIndex = 1
+
+        Dim lblCard2Title As New Label()
+        lblCard2Title.AutoSize = True
+        lblCard2Title.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        lblCard2Title.ForeColor = System.Drawing.Color.FromArgb(CType(107, Byte), CType(114, Byte), CType(128, Byte))
+        lblCard2Title.Location = New System.Drawing.Point(15, 10)
+        lblCard2Title.Name = "lblCard2Title"
+        lblCard2Title.Text = "Harga Pokok Penjualan (HPP)"
+        Me.pnlNeracaCard2.Controls.Add(lblCard2Title)
+
+        Me.lblNeracaHPP.AutoSize = True
+        Me.lblNeracaHPP.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Bold)
+        Me.lblNeracaHPP.ForeColor = System.Drawing.Color.FromArgb(CType(249, Byte), CType(115, Byte), CType(22, Byte))
+        Me.lblNeracaHPP.Location = New System.Drawing.Point(15, 28)
+        Me.lblNeracaHPP.Name = "lblNeracaHPP"
+        Me.lblNeracaHPP.Text = "Rp 0"
+        Me.pnlNeracaCard2.Controls.Add(Me.lblNeracaHPP)
+
+        Me.lblNeracaHPPSub.AutoSize = True
+        Me.lblNeracaHPPSub.Font = New System.Drawing.Font("Segoe UI", 8.0!)
+        Me.lblNeracaHPPSub.ForeColor = System.Drawing.Color.FromArgb(CType(107, Byte), CType(114, Byte), CType(128, Byte))
+        Me.lblNeracaHPPSub.Location = New System.Drawing.Point(200, 35)
+        Me.lblNeracaHPPSub.Name = "lblNeracaHPPSub"
+        Me.lblNeracaHPPSub.Text = "Dari transaksi aktif"
+        Me.pnlNeracaCard2.Controls.Add(Me.lblNeracaHPPSub)
+
+        Me.pnlNeracaCard3.BackColor = System.Drawing.Color.White
+        Me.pnlNeracaCard3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlNeracaCard3.Location = New System.Drawing.Point(15, 175)
+        Me.pnlNeracaCard3.Name = "pnlNeracaCard3"
+        Me.pnlNeracaCard3.Padding = New System.Windows.Forms.Padding(15)
+        Me.pnlNeracaCard3.Size = New System.Drawing.Size(1042, 70)
+        Me.pnlNeracaCard3.TabIndex = 2
+
+        Dim lblCard3Title As New Label()
+        lblCard3Title.AutoSize = True
+        lblCard3Title.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        lblCard3Title.ForeColor = System.Drawing.Color.FromArgb(CType(107, Byte), CType(114, Byte), CType(128, Byte))
+        lblCard3Title.Location = New System.Drawing.Point(15, 10)
+        lblCard3Title.Name = "lblCard3Title"
+        lblCard3Title.Text = "Laba Kotor"
+        Me.pnlNeracaCard3.Controls.Add(lblCard3Title)
+
+        Me.lblNeracaLabaKotor.AutoSize = True
+        Me.lblNeracaLabaKotor.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Bold)
+        Me.lblNeracaLabaKotor.ForeColor = System.Drawing.Color.FromArgb(CType(37, Byte), CType(99, Byte), CType(235, Byte))
+        Me.lblNeracaLabaKotor.Location = New System.Drawing.Point(15, 28)
+        Me.lblNeracaLabaKotor.Name = "lblNeracaLabaKotor"
+        Me.lblNeracaLabaKotor.Text = "Rp 0"
+        Me.pnlNeracaCard3.Controls.Add(Me.lblNeracaLabaKotor)
+
+        Me.lblNeracaLabaKotorSub.AutoSize = True
+        Me.lblNeracaLabaKotorSub.Font = New System.Drawing.Font("Segoe UI", 8.0!)
+        Me.lblNeracaLabaKotorSub.ForeColor = System.Drawing.Color.FromArgb(CType(107, Byte), CType(114, Byte), CType(128, Byte))
+        Me.lblNeracaLabaKotorSub.Location = New System.Drawing.Point(200, 35)
+        Me.lblNeracaLabaKotorSub.Name = "lblNeracaLabaKotorSub"
+        Me.lblNeracaLabaKotorSub.Text = "Pendapatan - HPP"
+        Me.pnlNeracaCard3.Controls.Add(Me.lblNeracaLabaKotorSub)
+
+        Me.pnlNeracaCard4.BackColor = System.Drawing.Color.White
+        Me.pnlNeracaCard4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlNeracaCard4.Location = New System.Drawing.Point(15, 255)
+        Me.pnlNeracaCard4.Name = "pnlNeracaCard4"
+        Me.pnlNeracaCard4.Padding = New System.Windows.Forms.Padding(15)
+        Me.pnlNeracaCard4.Size = New System.Drawing.Size(1042, 70)
+        Me.pnlNeracaCard4.TabIndex = 3
+
+        Dim lblCard4Title As New Label()
+        lblCard4Title.AutoSize = True
+        lblCard4Title.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        lblCard4Title.ForeColor = System.Drawing.Color.FromArgb(CType(107, Byte), CType(114, Byte), CType(128, Byte))
+        lblCard4Title.Location = New System.Drawing.Point(15, 10)
+        lblCard4Title.Name = "lblCard4Title"
+        lblCard4Title.Text = "Total Pengeluaran Operasional"
+        Me.pnlNeracaCard4.Controls.Add(lblCard4Title)
+
+        Me.lblNeracaPengeluaran.AutoSize = True
+        Me.lblNeracaPengeluaran.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Bold)
+        Me.lblNeracaPengeluaran.ForeColor = System.Drawing.Color.FromArgb(CType(220, Byte), CType(38, Byte), CType(38, Byte))
+        Me.lblNeracaPengeluaran.Location = New System.Drawing.Point(15, 28)
+        Me.lblNeracaPengeluaran.Name = "lblNeracaPengeluaran"
+        Me.lblNeracaPengeluaran.Text = "Rp 0"
+        Me.pnlNeracaCard4.Controls.Add(Me.lblNeracaPengeluaran)
+
+        Me.btnKelolaPengeluaran.BackColor = System.Drawing.Color.FromArgb(CType(37, Byte), CType(99, Byte), CType(235, Byte))
+        Me.btnKelolaPengeluaran.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnKelolaPengeluaran.Font = New System.Drawing.Font("Segoe UI", 8.0!)
+        Me.btnKelolaPengeluaran.ForeColor = System.Drawing.Color.White
+        Me.btnKelolaPengeluaran.Location = New System.Drawing.Point(200, 35)
+        Me.btnKelolaPengeluaran.Name = "btnKelolaPengeluaran"
+        Me.btnKelolaPengeluaran.Size = New System.Drawing.Size(120, 23)
+        Me.btnKelolaPengeluaran.TabIndex = 0
+        Me.btnKelolaPengeluaran.Text = "Kelola Pengeluaran"
+        Me.btnKelolaPengeluaran.UseVisualStyleBackColor = False
+        Me.pnlNeracaCard4.Controls.Add(Me.btnKelolaPengeluaran)
+
+        Me.pnlNeracaCard5.BackColor = System.Drawing.Color.White
+        Me.pnlNeracaCard5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlNeracaCard5.Location = New System.Drawing.Point(15, 335)
+        Me.pnlNeracaCard5.Name = "pnlNeracaCard5"
+        Me.pnlNeracaCard5.Padding = New System.Windows.Forms.Padding(15)
+        Me.pnlNeracaCard5.Size = New System.Drawing.Size(1042, 70)
+        Me.pnlNeracaCard5.TabIndex = 4
+
+        Dim lblCard5Title As New Label()
+        lblCard5Title.AutoSize = True
+        lblCard5Title.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        lblCard5Title.ForeColor = System.Drawing.Color.FromArgb(CType(107, Byte), CType(114, Byte), CType(128, Byte))
+        lblCard5Title.Location = New System.Drawing.Point(15, 10)
+        lblCard5Title.Name = "lblCard5Title"
+        lblCard5Title.Text = "Laba Bersih"
+        Me.pnlNeracaCard5.Controls.Add(lblCard5Title)
+
+        Me.lblNeracaLabaBersih.AutoSize = True
+        Me.lblNeracaLabaBersih.Font = New System.Drawing.Font("Segoe UI", 20.0!, System.Drawing.FontStyle.Bold)
+        Me.lblNeracaLabaBersih.ForeColor = System.Drawing.Color.FromArgb(CType(34, Byte), CType(197, Byte), CType(94, Byte))
+        Me.lblNeracaLabaBersih.Location = New System.Drawing.Point(15, 25)
+        Me.lblNeracaLabaBersih.Name = "lblNeracaLabaBersih"
+        Me.lblNeracaLabaBersih.Text = "Rp 0"
+        Me.pnlNeracaCard5.Controls.Add(Me.lblNeracaLabaBersih)
+
+        Me.pnlNeracaCard6.BackColor = System.Drawing.Color.White
+        Me.pnlNeracaCard6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlNeracaCard6.Location = New System.Drawing.Point(15, 415)
+        Me.pnlNeracaCard6.Name = "pnlNeracaCard6"
+        Me.pnlNeracaCard6.Padding = New System.Windows.Forms.Padding(15)
+        Me.pnlNeracaCard6.Size = New System.Drawing.Size(1042, 70)
+        Me.pnlNeracaCard6.TabIndex = 5
+
+        Dim lblCard6Title As New Label()
+        lblCard6Title.AutoSize = True
+        lblCard6Title.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        lblCard6Title.ForeColor = System.Drawing.Color.FromArgb(CType(107, Byte), CType(114, Byte), CType(128, Byte))
+        lblCard6Title.Location = New System.Drawing.Point(15, 10)
+        lblCard6Title.Name = "lblCard6Title"
+        lblCard6Title.Text = "Total Void / Retur"
+        Me.pnlNeracaCard6.Controls.Add(lblCard6Title)
+
+        Me.lblNeracaVoid.AutoSize = True
+        Me.lblNeracaVoid.Font = New System.Drawing.Font("Segoe UI", 18.0!, System.Drawing.FontStyle.Bold)
+        Me.lblNeracaVoid.ForeColor = System.Drawing.Color.FromArgb(CType(107, Byte), CType(114, Byte), CType(128, Byte))
+        Me.lblNeracaVoid.Location = New System.Drawing.Point(15, 28)
+        Me.lblNeracaVoid.Name = "lblNeracaVoid"
+        Me.lblNeracaVoid.Text = "Rp 0"
+        Me.pnlNeracaCard6.Controls.Add(Me.lblNeracaVoid)
+
+        Me.lblNeracaVoidSub.AutoSize = True
+        Me.lblNeracaVoidSub.Font = New System.Drawing.Font("Segoe UI", 8.0!)
+        Me.lblNeracaVoidSub.ForeColor = System.Drawing.Color.FromArgb(CType(107, Byte), CType(114, Byte), CType(128, Byte))
+        Me.lblNeracaVoidSub.Location = New System.Drawing.Point(200, 35)
+        Me.lblNeracaVoidSub.Name = "lblNeracaVoidSub"
+        Me.lblNeracaVoidSub.Text = "Informasi tambahan"
+        Me.pnlNeracaCard6.Controls.Add(Me.lblNeracaVoidSub)
+
+        Me.tabLog.Controls.Add(Me.lblLogSummary)
+        Me.tabLog.Controls.Add(Me.dgvLog)
+        Me.tabLog.Controls.Add(Me.pnlLogFilter)
+        Me.tabLog.Location = New System.Drawing.Point(4, 24)
+        Me.tabLog.Name = "tabLog"
+        Me.tabLog.Padding = New System.Windows.Forms.Padding(10)
+        Me.tabLog.Size = New System.Drawing.Size(1092, 652)
+        Me.tabLog.TabIndex = 4
+        Me.tabLog.Text = "Log Aktivitas"
+        Me.tabLog.UseVisualStyleBackColor = True
+
+        Me.pnlLogFilter.BackColor = System.Drawing.Color.FromArgb(CType(249, Byte), CType(250, Byte), CType(251, Byte))
+        Me.pnlLogFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.pnlLogFilter.Controls.Add(Me.btnExportLog)
+        Me.pnlLogFilter.Controls.Add(Me.btnTampilkanLog)
+        Me.pnlLogFilter.Controls.Add(Me.cmbFilterAksi)
+        Me.pnlLogFilter.Controls.Add(Me.lblFilterAksi)
+        Me.pnlLogFilter.Controls.Add(Me.dtpLogSampai)
+        Me.pnlLogFilter.Controls.Add(Me.lblLogSampai)
+        Me.pnlLogFilter.Controls.Add(Me.dtpLogDari)
+        Me.pnlLogFilter.Controls.Add(Me.lblLogDari)
+        Me.pnlLogFilter.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlLogFilter.Location = New System.Drawing.Point(10, 10)
+        Me.pnlLogFilter.Name = "pnlLogFilter"
+        Me.pnlLogFilter.Padding = New System.Windows.Forms.Padding(15)
+        Me.pnlLogFilter.Size = New System.Drawing.Size(1072, 70)
+        Me.pnlLogFilter.TabIndex = 0
+
+        Me.lblLogDari.AutoSize = True
+        Me.lblLogDari.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.lblLogDari.Location = New System.Drawing.Point(15, 15)
+        Me.lblLogDari.Name = "lblLogDari"
+        Me.lblLogDari.Size = New System.Drawing.Size(70, 15)
+        Me.lblLogDari.TabIndex = 0
+        Me.lblLogDari.Text = "Dari Tanggal"
+
+        Me.dtpLogDari.Format = System.Windows.Forms.DateTimePickerFormat.Short
+        Me.dtpLogDari.Location = New System.Drawing.Point(15, 33)
+        Me.dtpLogDari.Name = "dtpLogDari"
+        Me.dtpLogDari.Size = New System.Drawing.Size(120, 23)
+        Me.dtpLogDari.TabIndex = 1
+
+        Me.lblLogSampai.AutoSize = True
+        Me.lblLogSampai.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.lblLogSampai.Location = New System.Drawing.Point(150, 15)
+        Me.lblLogSampai.Name = "lblLogSampai"
+        Me.lblLogSampai.Size = New System.Drawing.Size(85, 15)
+        Me.lblLogSampai.TabIndex = 2
+        Me.lblLogSampai.Text = "Sampai Tanggal"
+
+        Me.dtpLogSampai.Format = System.Windows.Forms.DateTimePickerFormat.Short
+        Me.dtpLogSampai.Location = New System.Drawing.Point(150, 33)
+        Me.dtpLogSampai.Name = "dtpLogSampai"
+        Me.dtpLogSampai.Size = New System.Drawing.Size(120, 23)
+        Me.dtpLogSampai.TabIndex = 3
+
+        Me.lblFilterAksi.AutoSize = True
+        Me.lblFilterAksi.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.lblFilterAksi.Location = New System.Drawing.Point(285, 15)
+        Me.lblFilterAksi.Name = "lblFilterAksi"
+        Me.lblFilterAksi.Size = New System.Drawing.Size(30, 15)
+        Me.lblFilterAksi.TabIndex = 4
+        Me.lblFilterAksi.Text = "Aksi"
+
+        Me.cmbFilterAksi.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.cmbFilterAksi.FormattingEnabled = True
+        Me.cmbFilterAksi.Location = New System.Drawing.Point(285, 33)
+        Me.cmbFilterAksi.Name = "cmbFilterAksi"
+        Me.cmbFilterAksi.Size = New System.Drawing.Size(150, 23)
+        Me.cmbFilterAksi.TabIndex = 5
+
+        Me.btnTampilkanLog.BackColor = System.Drawing.Color.FromArgb(CType(37, Byte), CType(99, Byte), CType(235, Byte))
+        Me.btnTampilkanLog.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnTampilkanLog.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold)
+        Me.btnTampilkanLog.ForeColor = System.Drawing.Color.White
+        Me.btnTampilkanLog.Location = New System.Drawing.Point(450, 33)
+        Me.btnTampilkanLog.Name = "btnTampilkanLog"
+        Me.btnTampilkanLog.Size = New System.Drawing.Size(90, 23)
+        Me.btnTampilkanLog.TabIndex = 6
+        Me.btnTampilkanLog.Text = "Tampilkan"
+        Me.btnTampilkanLog.UseVisualStyleBackColor = False
+
+        Me.btnExportLog.BackColor = System.Drawing.Color.FromArgb(CType(34, Byte), CType(197, Byte), CType(94, Byte))
+        Me.btnExportLog.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnExportLog.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold)
+        Me.btnExportLog.ForeColor = System.Drawing.Color.White
+        Me.btnExportLog.Location = New System.Drawing.Point(550, 33)
+        Me.btnExportLog.Name = "btnExportLog"
+        Me.btnExportLog.Size = New System.Drawing.Size(100, 23)
+        Me.btnExportLog.TabIndex = 7
+        Me.btnExportLog.Text = "Export Excel"
+        Me.btnExportLog.UseVisualStyleBackColor = False
+
+        Me.dgvLog.AllowUserToAddRows = False
+        Me.dgvLog.AllowUserToDeleteRows = False
+        Me.dgvLog.BackgroundColor = System.Drawing.Color.White
+        Me.dgvLog.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.dgvLog.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.dgvLog.Location = New System.Drawing.Point(10, 80)
+        Me.dgvLog.Name = "dgvLog"
+        Me.dgvLog.ReadOnly = True
+        Me.dgvLog.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.dgvLog.Size = New System.Drawing.Size(1072, 542)
+        Me.dgvLog.TabIndex = 1
+
+        Me.lblLogSummary.BackColor = System.Drawing.Color.FromArgb(CType(243, Byte), CType(244, Byte), CType(246, Byte))
+        Me.lblLogSummary.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.lblLogSummary.Dock = System.Windows.Forms.DockStyle.Bottom
+        Me.lblLogSummary.Font = New System.Drawing.Font("Segoe UI", 9.0!)
+        Me.lblLogSummary.Location = New System.Drawing.Point(10, 622)
+        Me.lblLogSummary.Name = "lblLogSummary"
+        Me.lblLogSummary.Padding = New System.Windows.Forms.Padding(10)
+        Me.lblLogSummary.Size = New System.Drawing.Size(1072, 30)
+        Me.lblLogSummary.TabIndex = 2
+        Me.lblLogSummary.Text = "Total Log: 0"
+
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1100, 680)
@@ -465,7 +918,16 @@ Partial Class FrmLaporan
         CType(Me.dgvVoid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlFilterVoid.ResumeLayout(False)
         Me.pnlFilterVoid.PerformLayout()
-        Me.SuspendLayout()
+        Me.tabNeraca.ResumeLayout(False)
+        Me.pnlNeracaFilter.ResumeLayout(False)
+        Me.pnlNeracaFilter.PerformLayout()
+        Me.pnlNeracaContent.ResumeLayout(False)
+        Me.pnlNeracaContent.PerformLayout()
+        Me.tabLog.ResumeLayout(False)
+        CType(Me.dgvLog, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.pnlLogFilter.ResumeLayout(False)
+        Me.pnlLogFilter.PerformLayout()
+        Me.ResumeLayout(False)
 
     End Sub
 
@@ -506,5 +968,44 @@ Partial Class FrmLaporan
     Friend WithEvents btnTampilkanVoid As Button
     Friend WithEvents dgvVoid As DataGridView
     Friend WithEvents btnVoid As Button
+    Friend WithEvents tabNeraca As TabPage
+    Friend WithEvents pnlNeracaFilter As Panel
+    Friend WithEvents btnPrintNeraca As Button
+    Friend WithEvents btnExportNeraca As Button
+    Friend WithEvents btnHitungNeraca As Button
+    Friend WithEvents dtpNeracaSampai As DateTimePicker
+    Friend WithEvents lblNeracaSampai As Label
+    Friend WithEvents dtpNeracaDari As DateTimePicker
+    Friend WithEvents lblNeracaDari As Label
+    Friend WithEvents pnlNeracaContent As Panel
+    Friend WithEvents pnlNeracaCard1 As Panel
+    Friend WithEvents lblNeracaPendapatan As Label
+    Friend WithEvents lblNeracaPendapatanSub As Label
+    Friend WithEvents pnlNeracaCard2 As Panel
+    Friend WithEvents lblNeracaHPP As Label
+    Friend WithEvents lblNeracaHPPSub As Label
+    Friend WithEvents pnlNeracaCard3 As Panel
+    Friend WithEvents lblNeracaLabaKotor As Label
+    Friend WithEvents lblNeracaLabaKotorSub As Label
+    Friend WithEvents pnlNeracaCard4 As Panel
+    Friend WithEvents lblNeracaPengeluaran As Label
+    Friend WithEvents btnKelolaPengeluaran As Button
+    Friend WithEvents pnlNeracaCard5 As Panel
+    Friend WithEvents lblNeracaLabaBersih As Label
+    Friend WithEvents pnlNeracaCard6 As Panel
+    Friend WithEvents lblNeracaVoid As Label
+    Friend WithEvents lblNeracaVoidSub As Label
+    Friend WithEvents tabLog As TabPage
+    Friend WithEvents pnlLogFilter As Panel
+    Friend WithEvents btnExportLog As Button
+    Friend WithEvents btnTampilkanLog As Button
+    Friend WithEvents cmbFilterAksi As ComboBox
+    Friend WithEvents lblFilterAksi As Label
+    Friend WithEvents dtpLogSampai As DateTimePicker
+    Friend WithEvents lblLogSampai As Label
+    Friend WithEvents dtpLogDari As DateTimePicker
+    Friend WithEvents lblLogDari As Label
+    Friend WithEvents dgvLog As DataGridView
+    Friend WithEvents lblLogSummary As Label
 
 End Class
