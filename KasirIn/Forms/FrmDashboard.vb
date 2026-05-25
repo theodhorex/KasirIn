@@ -12,7 +12,12 @@ Public Class FrmDashboard
             LoadStokMenipis()
 
             System.Windows.Forms.Application.DoEvents()
-            LoadCharts()
+
+            Try
+                LoadCharts()
+            Catch chartEx As Exception
+                MsgBox("Warning: Chart loading failed: " & chartEx.Message & vbCrLf & "Dashboard will continue without charts.", MsgBoxStyle.Exclamation)
+            End Try
         Catch ex As Exception
             MsgBox("Error loading dashboard: " & ex.Message & vbCrLf & ex.StackTrace, MsgBoxStyle.Critical)
         End Try
@@ -135,18 +140,23 @@ Public Class FrmDashboard
 
     Private Sub LoadCharts()
         Try
-            LoadPenjualanChart()
-            LoadTransaksiChart()
+            If chartPenjualan IsNot Nothing Then
+                LoadPenjualanChart()
+            End If
+            If chartTransaksi IsNot Nothing Then
+                LoadTransaksiChart()
+            End If
         Catch ex As Exception
-            MsgBox("Error loading charts: " & ex.Message, MsgBoxStyle.Critical)
+            Throw New Exception("Error in LoadCharts: " & ex.Message, ex)
         End Try
     End Sub
 
     Private Sub LoadPenjualanChart()
-        Dim connection As MySqlConnection = DBConnection.GetConnection()
-        If connection Is Nothing Then Return
-
+        Dim connection As MySqlConnection = Nothing
         Try
+            connection = DBConnection.GetConnection()
+            If connection Is Nothing Then Return
+
             If chartPenjualan Is Nothing Then Return
 
             Dim query As String = "SELECT DATE(tanggal) as tgl, COALESCE(SUM(total_bayar), 0) as total FROM tbl_transaksi WHERE tanggal >= DATE_SUB(CURDATE(), INTERVAL 6 DAY) AND status = 'aktif' GROUP BY DATE(tanggal) ORDER BY tgl ASC"
@@ -200,17 +210,23 @@ Public Class FrmDashboard
             chartArea.AxisY.LabelStyle.Format = "Rp #,##0"
 
         Catch ex As Exception
-            MsgBox("Error loading penjualan chart: " & ex.Message, MsgBoxStyle.Critical)
+            Throw New Exception("Error in LoadPenjualanChart: " & ex.Message, ex)
         Finally
-            connection.Close()
+            If connection IsNot Nothing Then
+                Try
+                    connection.Close()
+                Catch
+                End Try
+            End If
         End Try
     End Sub
 
     Private Sub LoadTransaksiChart()
-        Dim connection As MySqlConnection = DBConnection.GetConnection()
-        If connection Is Nothing Then Return
-
+        Dim connection As MySqlConnection = Nothing
         Try
+            connection = DBConnection.GetConnection()
+            If connection Is Nothing Then Return
+
             If chartTransaksi Is Nothing Then Return
 
             Dim query As String = "SELECT DATE(tanggal) as tgl, COUNT(*) as jumlah FROM tbl_transaksi WHERE tanggal >= DATE_SUB(CURDATE(), INTERVAL 6 DAY) AND status = 'aktif' GROUP BY DATE(tanggal) ORDER BY tgl ASC"
@@ -267,9 +283,14 @@ Public Class FrmDashboard
             chartArea.AxisY.LabelStyle.Format = "#"
 
         Catch ex As Exception
-            MsgBox("Error loading transaksi chart: " & ex.Message, MsgBoxStyle.Critical)
+            Throw New Exception("Error in LoadTransaksiChart: " & ex.Message, ex)
         Finally
-            connection.Close()
+            If connection IsNot Nothing Then
+                Try
+                    connection.Close()
+                Catch
+                End Try
+            End If
         End Try
     End Sub
 
@@ -282,7 +303,11 @@ Public Class FrmDashboard
             LoadTransaksiTerakhir()
             LoadStokMenipis()
             System.Windows.Forms.Application.DoEvents()
-            LoadCharts()
+            Try
+                LoadCharts()
+            Catch chartEx As Exception
+                MsgBox("Warning: Chart loading failed: " & chartEx.Message, MsgBoxStyle.Exclamation)
+            End Try
         Catch ex As Exception
             MsgBox("Error reloading dashboard: " & ex.Message, MsgBoxStyle.Critical)
         End Try

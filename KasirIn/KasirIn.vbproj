@@ -44,6 +44,9 @@
     <Compile Update="Forms\FrmSupplierDetail.Designer.vb">
       <DependentUpon>Forms\FrmSupplierDetail.vb</DependentUpon>
     </Compile>
+    <Compile Update="Forms\FrmPengeluaran.Designer.vb">
+      <DependentUpon>Forms\FrmPengeluaran.vb</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -62,6 +65,7 @@
   <ItemGroup>
     <PackageReference Include="MySql.Data" Version="8.2.0" />
     <PackageReference Include="iTextSharp" Version="5.5.13.3" />
+    <PackageReference Include="System.Windows.Forms.DataVisualization" Version="1.0.0-prerelease.20110.1" />
   </ItemGroup>
 
 </Project>

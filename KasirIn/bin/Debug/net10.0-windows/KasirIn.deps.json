@@ -9,6 +9,7 @@
       "KasirIn/1.0.0": {
         "dependencies": {
           "MySql.Data": "8.2.0",
+          "System.Windows.Forms.DataVisualization": "1.0.0-prerelease.20110.1",
           "iTextSharp": "5.5.13.3"
         },
         "runtime": {
@@ -119,6 +120,14 @@
           }
         }
       },
+      "System.Windows.Forms.DataVisualization/1.0.0-prerelease.20110.1": {
+        "runtime": {
+          "lib/netcoreapp3.0/System.Windows.Forms.DataVisualization.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.20.11001"
+          }
+        }
+      },
       "ZstdSharp.Port/0.7.1": {
         "runtime": {
           "lib/net7.0/ZstdSharp.dll": {
@@ -190,6 +199,13 @@
       "sha512": "sha512-p62lWlKvJJ5UnBNvtal3JM9SOyQaaIA4C6E5LO2TOlO8CF5BDX0I8HsihbzP8wOELZhD4I3vpferDRv7uBNkOg==",
       "path": "mysql.data/8.2.0",
       "hashPath": "mysql.data.8.2.0.nupkg.sha512"
+    },
+    "System.Windows.Forms.DataVisualization/1.0.0-prerelease.20110.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-1EdLFl/I5QobO4shpqUNslDGWTeRbpt3pLMSkiLQYzdWBDqf44/8TM5hXMtkA8ktHU80aVZYVEuxr8vJqcB1Ig==",
+      "path": "system.windows.forms.datavisualization/1.0.0-prerelease.20110.1",
+      "hashPath": "system.windows.forms.datavisualization.1.0.0-prerelease.20110.1.nupkg.sha512"
     },
     "ZstdSharp.Port/0.7.1": {
       "type": "package",
