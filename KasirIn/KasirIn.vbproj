@@ -1,0 +1,67 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <StartupObject>Sub Main</StartupObject>
+    <UseWindowsForms>true</UseWindowsForms>
+    <MyType>WindowsForms</MyType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="My Project\Application.Designer.vb">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Update="FrmLogin.Designer.vb">
+      <DependentUpon>FrmLogin.vb</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\FrmDashboard.Designer.vb">
+      <DependentUpon>Forms\FrmDashboard.vb</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\FrmProduk.Designer.vb">
+      <DependentUpon>Forms\FrmProduk.vb</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\FrmProdukDetail.Designer.vb">
+      <DependentUpon>Forms\FrmProdukDetail.vb</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\FrmKategori.Designer.vb">
+      <DependentUpon>Forms\FrmKategori.vb</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\FrmKasir.Designer.vb">
+      <DependentUpon>Forms\FrmKasir.vb</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\FrmSupplier.Designer.vb">
+      <DependentUpon>Forms\FrmSupplier.vb</DependentUpon>
+    </Compile>
+    <Compile Update="Forms\FrmSupplierDetail.Designer.vb">
+      <DependentUpon>Forms\FrmSupplierDetail.vb</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="FrmLogin.resx">
+      <DependentUpon>FrmLogin.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MySql.Data" Version="8.2.0" />
+    <PackageReference Include="iTextSharp" Version="5.5.13.3" />
+  </ItemGroup>
+
+</Project>

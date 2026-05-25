@@ -1,0 +1,53 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Nino\\Documents\\dev\\college\\ProgDesk\\KasirIn\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{13C03EE0-072C-6BB9-0C66-036EEE762CBA}|KasirIn\\KasirIn.vbproj|c:\\users\\nino\\documents\\dev\\college\\progdesk\\kasirin\\kasirin\\database\\dbconnection.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{13C03EE0-072C-6BB9-0C66-036EEE762CBA}|KasirIn\\KasirIn.vbproj|solutionrelative:kasirin\\database\\dbconnection.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{13C03EE0-072C-6BB9-0C66-036EEE762CBA}|KasirIn\\KasirIn.vbproj|c:\\users\\nino\\documents\\dev\\college\\progdesk\\kasirin\\kasirin\\frmlogin.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}",
+      "RelativeMoniker": "D:0:0:{13C03EE0-072C-6BB9-0C66-036EEE762CBA}|KasirIn\\KasirIn.vbproj|solutionrelative:kasirin\\frmlogin.vb||{2C015C70-C72C-11D0-88C3-00A0C9110049}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "DBConnection.vb",
+              "DocumentMoniker": "C:\\Users\\Nino\\Documents\\dev\\college\\ProgDesk\\KasirIn\\KasirIn\\Database\\DBConnection.vb",
+              "RelativeDocumentMoniker": "KasirIn\\Database\\DBConnection.vb",
+              "ToolTip": "C:\\Users\\Nino\\Documents\\dev\\college\\ProgDesk\\KasirIn\\KasirIn\\Database\\DBConnection.vb",
+              "RelativeToolTip": "KasirIn\\Database\\DBConnection.vb",
+              "ViewState": "AgIAAAkAAAAAAAAAAADwvw0AAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2026-05-22T21:42:23.713Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "FrmLogin.vb",
+              "DocumentMoniker": "C:\\Users\\Nino\\Documents\\dev\\college\\ProgDesk\\KasirIn\\KasirIn\\FrmLogin.vb",
+              "RelativeDocumentMoniker": "KasirIn\\FrmLogin.vb",
+              "ToolTip": "C:\\Users\\Nino\\Documents\\dev\\college\\ProgDesk\\KasirIn\\KasirIn\\FrmLogin.vb",
+              "RelativeToolTip": "KasirIn\\FrmLogin.vb",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003361|",
+              "WhenOpened": "2026-05-22T20:39:16.705Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
