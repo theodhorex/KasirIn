@@ -3,41 +3,18 @@ Imports System.Windows.Forms.DataVisualization.Charting
 
 Public Class FrmDashboard
     Private Sub FrmDashboard_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        If SessionHelper.UserId = 0 Then
-            Dim loginForm As New FrmLogin()
-            loginForm.ShowDialog()
-            If SessionHelper.UserId = 0 Then
-                Me.Close()
-                Return
-            End If
-        End If
-
-        SetupUI()
-        ApplyRoleBasedVisibility()
-        LoadDashboardData()
-    End Sub
-
-    Private Sub SetupUI()
-        lblUserInfo.Text = "Halo, " & SessionHelper.NamaLengkap & " (" & SessionHelper.Role & ")"
-        lblPageTitle.Text = "Beranda"
-        SetActiveNavButton(btnBeranda)
-    End Sub
-
-    Private Sub ApplyRoleBasedVisibility()
-        If SessionHelper.Role = "Kasir" Then
-            btnSupplier.Visible = False
-            btnLaporan.Visible = False
-        End If
-    End Sub
-
-    Private Sub LoadDashboardData()
         Try
+            SetupUI()
+            ApplyRoleBasedVisibility()
+
             LoadSummaryCards()
             LoadTransaksiTerakhir()
             LoadStokMenipis()
+
+            System.Windows.Forms.Application.DoEvents()
             LoadCharts()
         Catch ex As Exception
-            MsgBox("Error loading dashboard: " & ex.Message, MsgBoxStyle.Critical)
+            MsgBox("Error loading dashboard: " & ex.Message & vbCrLf & ex.StackTrace, MsgBoxStyle.Critical)
         End Try
     End Sub
 
@@ -135,9 +112,34 @@ Public Class FrmDashboard
         End Try
     End Sub
 
+    Private Sub SetupUI()
+        Try
+            lblUserInfo.Text = "Halo, " & SessionHelper.NamaLengkap & " (" & SessionHelper.Role & ")"
+            lblPageTitle.Text = "Beranda"
+            SetActiveNavButton(btnBeranda)
+        Catch ex As Exception
+            MsgBox("Error in SetupUI: " & ex.Message, MsgBoxStyle.Critical)
+        End Try
+    End Sub
+
+    Private Sub ApplyRoleBasedVisibility()
+        Try
+            If SessionHelper.Role = "Kasir" Then
+                btnSupplier.Visible = False
+                btnLaporan.Visible = False
+            End If
+        Catch ex As Exception
+            MsgBox("Error in ApplyRoleBasedVisibility: " & ex.Message, MsgBoxStyle.Critical)
+        End Try
+    End Sub
+
     Private Sub LoadCharts()
-        LoadPenjualanChart()
-        LoadTransaksiChart()
+        Try
+            LoadPenjualanChart()
+            LoadTransaksiChart()
+        Catch ex As Exception
+            MsgBox("Error loading charts: " & ex.Message, MsgBoxStyle.Critical)
+        End Try
     End Sub
 
     Private Sub LoadPenjualanChart()
@@ -145,6 +147,8 @@ Public Class FrmDashboard
         If connection Is Nothing Then Return
 
         Try
+            If chartPenjualan Is Nothing Then Return
+
             Dim query As String = "SELECT DATE(tanggal) as tgl, COALESCE(SUM(total_bayar), 0) as total FROM tbl_transaksi WHERE tanggal >= DATE_SUB(CURDATE(), INTERVAL 6 DAY) AND status = 'aktif' GROUP BY DATE(tanggal) ORDER BY tgl ASC"
             Dim adapter As New MySqlDataAdapter(query, connection)
             Dim table As New DataTable()
@@ -195,6 +199,8 @@ Public Class FrmDashboard
             chartArea.AxisY.LabelStyle.Font = New Font("Segoe UI", 8)
             chartArea.AxisY.LabelStyle.Format = "Rp #,##0"
 
+        Catch ex As Exception
+            MsgBox("Error loading penjualan chart: " & ex.Message, MsgBoxStyle.Critical)
         Finally
             connection.Close()
         End Try
@@ -205,6 +211,8 @@ Public Class FrmDashboard
         If connection Is Nothing Then Return
 
         Try
+            If chartTransaksi Is Nothing Then Return
+
             Dim query As String = "SELECT DATE(tanggal) as tgl, COUNT(*) as jumlah FROM tbl_transaksi WHERE tanggal >= DATE_SUB(CURDATE(), INTERVAL 6 DAY) AND status = 'aktif' GROUP BY DATE(tanggal) ORDER BY tgl ASC"
             Dim adapter As New MySqlDataAdapter(query, connection)
             Dim table As New DataTable()
@@ -258,6 +266,8 @@ Public Class FrmDashboard
             chartArea.AxisY.LabelStyle.Font = New Font("Segoe UI", 8)
             chartArea.AxisY.LabelStyle.Format = "#"
 
+        Catch ex As Exception
+            MsgBox("Error loading transaksi chart: " & ex.Message, MsgBoxStyle.Critical)
         Finally
             connection.Close()
         End Try
@@ -267,7 +277,15 @@ Public Class FrmDashboard
         lblPageTitle.Text = "Beranda"
         pnlBeranda.Visible = True
         SetActiveNavButton(btnBeranda)
-        LoadDashboardData()
+        Try
+            LoadSummaryCards()
+            LoadTransaksiTerakhir()
+            LoadStokMenipis()
+            System.Windows.Forms.Application.DoEvents()
+            LoadCharts()
+        Catch ex As Exception
+            MsgBox("Error reloading dashboard: " & ex.Message, MsgBoxStyle.Critical)
+        End Try
     End Sub
 
     Private Sub btnKasir_Click(sender As Object, e As EventArgs) Handles btnKasir.Click

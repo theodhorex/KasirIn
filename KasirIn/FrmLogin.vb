@@ -40,6 +40,8 @@ Public Class FrmLogin
     End Function
 
     Private Sub PerformLogin()
+        Dim connection As MySqlConnection = Nothing
+        Dim reader As MySqlDataReader = Nothing
         Try
             btnLogin.Enabled = False
             btnLogin.Text = "Memproses..."
@@ -49,7 +51,7 @@ Public Class FrmLogin
 
             Dim hashedPassword As String = ComputeSHA256(password)
 
-            Dim connection As MySqlConnection = DBConnection.GetConnection()
+            connection = DBConnection.GetConnection()
             If connection Is Nothing Then
                 ShowError("Gagal terhubung ke database")
                 btnLogin.Enabled = True
@@ -62,7 +64,7 @@ Public Class FrmLogin
             command.Parameters.AddWithValue("@username", username)
             command.Parameters.AddWithValue("@password", hashedPassword)
 
-            Dim reader As MySqlDataReader = command.ExecuteReader()
+            reader = command.ExecuteReader()
 
             If reader.Read() Then
                 Dim isActive As Integer = reader("is_active")
@@ -82,22 +84,37 @@ Public Class FrmLogin
                     LogHelper.CatatLog("Login", "User " & SessionHelper.Username & " berhasil login")
 
                     MsgBox("Login berhasil! Selamat datang, " & SessionHelper.NamaLengkap, MsgBoxStyle.Information, "Success")
-                    Me.DialogResult = DialogResult.OK
-                    Me.Close()
+
+                    Dim dashboardForm As New FrmDashboard()
+                    dashboardForm.Show()
+                    Me.Hide()
+                    Return
                 End If
             Else
                 ShowError("Username atau password salah")
                 txtPassword.Clear()
             End If
 
-            reader.Close()
-            connection.Close()
+            If reader IsNot Nothing Then reader.Close()
+            If connection IsNot Nothing Then connection.Close()
 
         Catch ex As MySqlException
             ShowError("Database error: " & ex.Message)
         Catch ex As Exception
             ShowError("Error: " & ex.Message)
         Finally
+            If reader IsNot Nothing Then
+                Try
+                    reader.Close()
+                Catch
+                End Try
+            End If
+            If connection IsNot Nothing Then
+                Try
+                    connection.Close()
+                Catch
+                End Try
+            End If
             btnLogin.Enabled = True
             btnLogin.Text = "Login"
         End Try
