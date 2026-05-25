@@ -16,10 +16,11 @@ Public Class FrmDashboard
             Try
                 LoadCharts()
             Catch chartEx As Exception
-                MsgBox("Warning: Chart loading failed: " & chartEx.Message & vbCrLf & "Dashboard will continue without charts.", MsgBoxStyle.Exclamation)
+                System.Diagnostics.Debug.WriteLine("Chart Error: " & chartEx.Message & vbCrLf & chartEx.StackTrace)
             End Try
         Catch ex As Exception
-            MsgBox("Error loading dashboard: " & ex.Message & vbCrLf & ex.StackTrace, MsgBoxStyle.Critical)
+            System.Diagnostics.Debug.WriteLine("Dashboard Load Error: " & ex.Message & vbCrLf & ex.StackTrace)
+            MsgBox("Error loading dashboard: " & ex.Message, MsgBoxStyle.Critical)
         End Try
     End Sub
 
@@ -140,14 +141,11 @@ Public Class FrmDashboard
 
     Private Sub LoadCharts()
         Try
-            If chartPenjualan IsNot Nothing Then
-                LoadPenjualanChart()
-            End If
-            If chartTransaksi IsNot Nothing Then
-                LoadTransaksiChart()
-            End If
+            ' Charts disabled temporarily - focus on data display
+            ' LoadPenjualanChart()
+            ' LoadTransaksiChart()
         Catch ex As Exception
-            Throw New Exception("Error in LoadCharts: " & ex.Message, ex)
+            System.Diagnostics.Debug.WriteLine("LoadCharts Error: " & ex.Message)
         End Try
     End Sub
 

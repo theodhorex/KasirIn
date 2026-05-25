@@ -16,7 +16,7 @@ Imports System.Reflection
 <Assembly: System.Reflection.AssemblyCompanyAttribute("KasirIn"),  _
  Assembly: System.Reflection.AssemblyConfigurationAttribute("Debug"),  _
  Assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0"),  _
- Assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+889a7fa8f8b96972d27e75f063d3f156e62b5cdc"),  _
+ Assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5ac7258e61a97f061ab697c928afd0bc1ab1ca8c"),  _
  Assembly: System.Reflection.AssemblyProductAttribute("KasirIn"),  _
  Assembly: System.Reflection.AssemblyTitleAttribute("KasirIn"),  _
  Assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0"),  _
