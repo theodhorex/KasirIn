@@ -1,4 +1,5 @@
 Imports MySql.Data.MySqlClient
+Imports System.Windows.Forms.DataVisualization.Charting
 
 Public Class FrmDashboard
     Private Sub FrmDashboard_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -34,6 +35,7 @@ Public Class FrmDashboard
             LoadSummaryCards()
             LoadTransaksiTerakhir()
             LoadStokMenipis()
+            LoadCharts()
         Catch ex As Exception
             MsgBox("Error loading dashboard: " & ex.Message, MsgBoxStyle.Critical)
         End Try
@@ -133,6 +135,134 @@ Public Class FrmDashboard
         End Try
     End Sub
 
+    Private Sub LoadCharts()
+        LoadPenjualanChart()
+        LoadTransaksiChart()
+    End Sub
+
+    Private Sub LoadPenjualanChart()
+        Dim connection As MySqlConnection = DBConnection.GetConnection()
+        If connection Is Nothing Then Return
+
+        Try
+            Dim query As String = "SELECT DATE(tanggal) as tgl, COALESCE(SUM(total_bayar), 0) as total FROM tbl_transaksi WHERE tanggal >= DATE_SUB(CURDATE(), INTERVAL 6 DAY) AND status = 'aktif' GROUP BY DATE(tanggal) ORDER BY tgl ASC"
+            Dim adapter As New MySqlDataAdapter(query, connection)
+            Dim table As New DataTable()
+            adapter.Fill(table)
+
+            chartPenjualan.Series.Clear()
+            chartPenjualan.ChartAreas.Clear()
+
+            Dim chartArea As New ChartArea("ChartArea1")
+            chartArea.BackColor = Color.White
+            chartPenjualan.ChartAreas.Add(chartArea)
+
+            Dim series As New Series("Penjualan")
+            series.ChartType = SeriesChartType.Column
+            series.Color = Color.FromArgb(37, 99, 235)
+            series.IsValueShownAsLabel = True
+            series.LabelFormat = "Rp #,##0"
+            series.Font = New Font("Segoe UI", 8)
+
+            Dim last7Days As New Dictionary(Of String, Decimal)
+            For i As Integer = 6 To 0 Step -1
+                Dim currentDate As DateTime = DateTime.Now.AddDays(-i)
+                Dim dateStr As String = currentDate.ToString("dd/MM")
+                last7Days(dateStr) = 0
+            Next
+
+            For Each row As DataRow In table.Rows
+                Dim dateStr As String = CDate(row("tgl")).ToString("dd/MM")
+                If last7Days.ContainsKey(dateStr) Then
+                    last7Days(dateStr) = CDec(row("total"))
+                End If
+            Next
+
+            For Each kvp In last7Days
+                series.Points.AddXY(kvp.Key, kvp.Value)
+            Next
+
+            chartPenjualan.Series.Add(series)
+
+            chartPenjualan.Legends.Clear()
+            chartPenjualan.Titles.Clear()
+            Dim title As New Title("Penjualan 7 Hari Terakhir")
+            title.Font = New Font("Segoe UI", 10, FontStyle.Bold)
+            title.ForeColor = Color.FromArgb(31, 41, 55)
+            chartPenjualan.Titles.Add(title)
+
+            chartArea.AxisX.LabelStyle.Font = New Font("Segoe UI", 8)
+            chartArea.AxisY.LabelStyle.Font = New Font("Segoe UI", 8)
+            chartArea.AxisY.LabelStyle.Format = "Rp #,##0"
+
+        Finally
+            connection.Close()
+        End Try
+    End Sub
+
+    Private Sub LoadTransaksiChart()
+        Dim connection As MySqlConnection = DBConnection.GetConnection()
+        If connection Is Nothing Then Return
+
+        Try
+            Dim query As String = "SELECT DATE(tanggal) as tgl, COUNT(*) as jumlah FROM tbl_transaksi WHERE tanggal >= DATE_SUB(CURDATE(), INTERVAL 6 DAY) AND status = 'aktif' GROUP BY DATE(tanggal) ORDER BY tgl ASC"
+            Dim adapter As New MySqlDataAdapter(query, connection)
+            Dim table As New DataTable()
+            adapter.Fill(table)
+
+            chartTransaksi.Series.Clear()
+            chartTransaksi.ChartAreas.Clear()
+
+            Dim chartArea As New ChartArea("ChartArea1")
+            chartArea.BackColor = Color.White
+            chartTransaksi.ChartAreas.Add(chartArea)
+
+            Dim series As New Series("Transaksi")
+            series.ChartType = SeriesChartType.Line
+            series.Color = Color.FromArgb(16, 185, 129)
+            series.BorderWidth = 3
+            series.MarkerStyle = MarkerStyle.Circle
+            series.MarkerSize = 8
+            series.IsValueShownAsLabel = True
+            series.LabelFormat = "#"
+            series.Font = New Font("Segoe UI", 8)
+
+            Dim last7Days As New Dictionary(Of String, Integer)
+            For i As Integer = 6 To 0 Step -1
+                Dim currentDate As DateTime = DateTime.Now.AddDays(-i)
+                Dim dateStr As String = currentDate.ToString("dd/MM")
+                last7Days(dateStr) = 0
+            Next
+
+            For Each row As DataRow In table.Rows
+                Dim dateStr As String = CDate(row("tgl")).ToString("dd/MM")
+                If last7Days.ContainsKey(dateStr) Then
+                    last7Days(dateStr) = CInt(row("jumlah"))
+                End If
+            Next
+
+            For Each kvp In last7Days
+                series.Points.AddXY(kvp.Key, kvp.Value)
+            Next
+
+            chartTransaksi.Series.Add(series)
+
+            chartTransaksi.Legends.Clear()
+            chartTransaksi.Titles.Clear()
+            Dim title As New Title("Jumlah Transaksi 7 Hari Terakhir")
+            title.Font = New Font("Segoe UI", 10, FontStyle.Bold)
+            title.ForeColor = Color.FromArgb(31, 41, 55)
+            chartTransaksi.Titles.Add(title)
+
+            chartArea.AxisX.LabelStyle.Font = New Font("Segoe UI", 8)
+            chartArea.AxisY.LabelStyle.Font = New Font("Segoe UI", 8)
+            chartArea.AxisY.LabelStyle.Format = "#"
+
+        Finally
+            connection.Close()
+        End Try
+    End Sub
+
     Private Sub btnBeranda_Click(sender As Object, e As EventArgs) Handles btnBeranda.Click
         lblPageTitle.Text = "Beranda"
         pnlBeranda.Visible = True
@@ -178,6 +308,7 @@ Public Class FrmDashboard
     Private Sub btnLogout_Click(sender As Object, e As EventArgs) Handles btnLogout.Click
         Dim result As DialogResult = MsgBox("Apakah Anda yakin ingin logout?", MsgBoxStyle.YesNo, "Confirm Logout")
         If result = DialogResult.Yes Then
+            LogHelper.CatatLog("Logout", "User " & SessionHelper.Username & " logout")
             SessionHelper.ClearSession()
             Dim loginForm As New FrmLogin()
             loginForm.Show()

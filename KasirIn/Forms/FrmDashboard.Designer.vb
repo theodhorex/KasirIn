@@ -31,6 +31,10 @@ Partial Class FrmDashboard
         Me.lblPageTitle = New System.Windows.Forms.Label()
         Me.pnlContent = New System.Windows.Forms.Panel()
         Me.pnlBeranda = New System.Windows.Forms.Panel()
+        Me.pnlCharts = New System.Windows.Forms.Panel()
+        Me.chartTransaksi = New System.Windows.Forms.DataVisualization.Charting.Chart()
+        Me.chartPenjualan = New System.Windows.Forms.DataVisualization.Charting.Chart()
+        Me.lblGrafikPenjualan = New System.Windows.Forms.Label()
         Me.pnlBottomSection = New System.Windows.Forms.Panel()
         Me.pnlStokMenipis = New System.Windows.Forms.Panel()
         Me.dgvStokMenipis = New System.Windows.Forms.DataGridView()
@@ -55,6 +59,9 @@ Partial Class FrmDashboard
         Me.pnlHeader.SuspendLayout()
         Me.pnlContent.SuspendLayout()
         Me.pnlBeranda.SuspendLayout()
+        Me.pnlCharts.SuspendLayout()
+        CType(Me.chartTransaksi, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.chartPenjualan, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.pnlBottomSection.SuspendLayout()
         Me.pnlStokMenipis.SuspendLayout()
         CType(Me.dgvStokMenipis, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -219,6 +226,7 @@ Partial Class FrmDashboard
         Me.pnlContent.TabIndex = 2
 
         Me.pnlBeranda.Controls.Add(Me.pnlBottomSection)
+        Me.pnlBeranda.Controls.Add(Me.pnlCharts)
         Me.pnlBeranda.Controls.Add(Me.pnlCards)
         Me.pnlBeranda.Dock = System.Windows.Forms.DockStyle.Fill
         Me.pnlBeranda.Location = New System.Drawing.Point(0, 0)
@@ -236,6 +244,38 @@ Partial Class FrmDashboard
         Me.pnlCards.Padding = New System.Windows.Forms.Padding(15)
         Me.pnlCards.Size = New System.Drawing.Size(1060, 150)
         Me.pnlCards.TabIndex = 0
+
+        Me.pnlCharts.BackColor = System.Drawing.Color.White
+        Me.pnlCharts.Controls.Add(Me.chartTransaksi)
+        Me.pnlCharts.Controls.Add(Me.chartPenjualan)
+        Me.pnlCharts.Controls.Add(Me.lblGrafikPenjualan)
+        Me.pnlCharts.Dock = System.Windows.Forms.DockStyle.Top
+        Me.pnlCharts.Location = New System.Drawing.Point(0, 150)
+        Me.pnlCharts.Name = "pnlCharts"
+        Me.pnlCharts.Padding = New System.Windows.Forms.Padding(15)
+        Me.pnlCharts.Size = New System.Drawing.Size(1060, 310)
+        Me.pnlCharts.TabIndex = 1
+
+        Me.lblGrafikPenjualan.AutoSize = True
+        Me.lblGrafikPenjualan.Font = New System.Drawing.Font("Segoe UI", 11.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblGrafikPenjualan.ForeColor = System.Drawing.Color.FromArgb(CType(31, Byte), CType(41, Byte), CType(55, Byte))
+        Me.lblGrafikPenjualan.Location = New System.Drawing.Point(15, 15)
+        Me.lblGrafikPenjualan.Name = "lblGrafikPenjualan"
+        Me.lblGrafikPenjualan.Size = New System.Drawing.Size(130, 20)
+        Me.lblGrafikPenjualan.TabIndex = 0
+        Me.lblGrafikPenjualan.Text = "Grafik Penjualan"
+
+        Me.chartPenjualan.BackColor = System.Drawing.Color.White
+        Me.chartPenjualan.Location = New System.Drawing.Point(15, 40)
+        Me.chartPenjualan.Name = "chartPenjualan"
+        Me.chartPenjualan.Size = New System.Drawing.Size(515, 255)
+        Me.chartPenjualan.TabIndex = 1
+
+        Me.chartTransaksi.BackColor = System.Drawing.Color.White
+        Me.chartTransaksi.Location = New System.Drawing.Point(530, 40)
+        Me.chartTransaksi.Name = "chartTransaksi"
+        Me.chartTransaksi.Size = New System.Drawing.Size(515, 255)
+        Me.chartTransaksi.TabIndex = 2
 
         Me.cardPenjualanHariIni.BackColor = System.Drawing.Color.White
         Me.cardPenjualanHariIni.Controls.Add(Me.lblPenjualanHariIni2)
@@ -424,6 +464,10 @@ Partial Class FrmDashboard
         Me.pnlHeader.PerformLayout()
         Me.pnlContent.ResumeLayout(False)
         Me.pnlBeranda.ResumeLayout(False)
+        Me.pnlCharts.ResumeLayout(False)
+        Me.pnlCharts.PerformLayout()
+        CType(Me.chartPenjualan, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.chartTransaksi, System.ComponentModel.ISupportInitialize).EndInit()
         Me.pnlBottomSection.ResumeLayout(False)
         Me.pnlStokMenipis.ResumeLayout(False)
         Me.pnlStokMenipis.PerformLayout()
@@ -471,6 +515,10 @@ Partial Class FrmDashboard
     Friend WithEvents cardStokMenipis As Panel
     Friend WithEvents lblStokMenipis1 As Label
     Friend WithEvents lblStokMenipis2 As Label
+    Friend WithEvents pnlCharts As Panel
+    Friend WithEvents chartPenjualan As System.Windows.Forms.DataVisualization.Charting.Chart
+    Friend WithEvents chartTransaksi As System.Windows.Forms.DataVisualization.Charting.Chart
+    Friend WithEvents lblGrafikPenjualan As Label
     Friend WithEvents pnlBottomSection As Panel
     Friend WithEvents pnlTransaksiTerakhir As Panel
     Friend WithEvents lblTransaksiTerakhir As Label
