@@ -175,6 +175,8 @@ Public Class FrmKategori
             command.ExecuteNonQuery()
             connection.Close()
 
+            LogHelper.CatatLog("Kelola Kategori", "Aksi: Tambah - " & txtNama.Text)
+
             MsgBox("Kategori berhasil ditambahkan", MsgBoxStyle.Information)
             ClearForm()
             pnlForm.Visible = False
@@ -200,6 +202,8 @@ Public Class FrmKategori
 
             command.ExecuteNonQuery()
             connection.Close()
+
+            LogHelper.CatatLog("Kelola Kategori", "Aksi: Edit - " & txtNama.Text)
 
             MsgBox("Kategori berhasil diperbarui", MsgBoxStyle.Information)
             ClearForm()
@@ -253,11 +257,19 @@ Public Class FrmKategori
             Dim connection As MySqlConnection = DBConnection.GetConnection()
             If connection Is Nothing Then Return
 
+            Dim getNamaQuery As String = "SELECT nama_kategori FROM tbl_kategori WHERE id_kategori = @id"
+            Dim getNamaCmd As New MySqlCommand(getNamaQuery, connection)
+            getNamaCmd.Parameters.AddWithValue("@id", idKategori)
+            Dim namaKategori As String = getNamaCmd.ExecuteScalar().ToString()
+
             Dim query As String = "DELETE FROM tbl_kategori WHERE id_kategori = @id"
             Dim command As New MySqlCommand(query, connection)
             command.Parameters.AddWithValue("@id", idKategori)
 
             command.ExecuteNonQuery()
+
+            LogHelper.CatatLog("Kelola Kategori", "Aksi: Hapus - " & namaKategori)
+
             connection.Close()
 
             MsgBox("Kategori berhasil dihapus", MsgBoxStyle.Information)
