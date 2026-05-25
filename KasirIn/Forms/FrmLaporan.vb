@@ -6,13 +6,19 @@ Public Class FrmLaporan
         dtpSampai.Value = DateTime.Today
         dtpVoidDari.Value = DateTime.Today
         dtpVoidSampai.Value = DateTime.Today
+        dtpLogDari.Value = DateTime.Today
+        dtpLogSampai.Value = DateTime.Today
 
         LoadKategori()
         LoadLaporanPenjualan()
         LoadLaporanStok()
         LoadLaporanVoid()
+        LoadNeracaKeuangan()
+        LoadFilterAksi()
 
         btnVoid.Visible = (SessionHelper.Role = "Admin")
+        btnKelolaPengeluaran.Visible = (SessionHelper.Role = "Admin")
+        tabLog.Visible = (SessionHelper.Role = "Admin")
     End Sub
 
     Private Sub LoadKategori()
@@ -551,5 +557,305 @@ Public Class FrmLaporan
         Next
 
         e.HasMorePages = False
+    End Sub
+
+    Private Sub LoadNeracaKeuangan()
+        dtpNeracaDari.Value = New DateTime(DateTime.Now.Year, DateTime.Now.Month, 1)
+        dtpNeracaSampai.Value = DateTime.Now
+        HitungNeraca()
+    End Sub
+
+    Private Sub btnHitungNeraca_Click(sender As Object, e As EventArgs) Handles btnHitungNeraca.Click
+        HitungNeraca()
+    End Sub
+
+    Private Sub HitungNeraca()
+        Try
+            Dim dari As String = dtpNeracaDari.Value.ToString("yyyy-MM-dd")
+            Dim sampai As String = dtpNeracaSampai.Value.ToString("yyyy-MM-dd")
+
+            Dim connection As MySqlConnection = DBConnection.GetConnection()
+            If connection Is Nothing Then Return
+
+            Dim pendapatan As Decimal = 0
+            Dim hpp As Decimal = 0
+            Dim pengeluaran As Decimal = 0
+            Dim void As Decimal = 0
+            Dim jumlahTransaksi As Integer = 0
+
+            Dim query1 As String = "SELECT COALESCE(SUM(total_bayar), 0) as pendapatan, COUNT(*) as jumlah " &
+                "FROM tbl_transaksi WHERE DATE(tanggal) BETWEEN @dari AND @sampai AND status = 'aktif'"
+            Dim cmd1 As New MySqlCommand(query1, connection)
+            cmd1.Parameters.AddWithValue("@dari", dari)
+            cmd1.Parameters.AddWithValue("@sampai", sampai)
+            Dim reader1 = cmd1.ExecuteReader()
+            If reader1.Read() Then
+                pendapatan = CDec(reader1("pendapatan"))
+                jumlahTransaksi = CInt(reader1("jumlah"))
+            End If
+            reader1.Close()
+
+            Dim query2 As String = "SELECT COALESCE(SUM(dt.jumlah * p.harga_beli), 0) as hpp " &
+                "FROM tbl_detail_transaksi dt " &
+                "JOIN tbl_transaksi t ON dt.id_transaksi = t.id_transaksi " &
+                "JOIN tbl_produk p ON dt.id_produk = p.id_produk " &
+                "WHERE DATE(t.tanggal) BETWEEN @dari AND @sampai AND t.status = 'aktif'"
+            Dim cmd2 As New MySqlCommand(query2, connection)
+            cmd2.Parameters.AddWithValue("@dari", dari)
+            cmd2.Parameters.AddWithValue("@sampai", sampai)
+            Dim reader2 = cmd2.ExecuteReader()
+            If reader2.Read() Then
+                hpp = CDec(reader2("hpp"))
+            End If
+            reader2.Close()
+
+            Dim query3 As String = "SELECT COALESCE(SUM(jumlah), 0) as total_pengeluaran " &
+                "FROM tbl_pengeluaran WHERE tanggal BETWEEN @dari AND @sampai"
+            Dim cmd3 As New MySqlCommand(query3, connection)
+            cmd3.Parameters.AddWithValue("@dari", dari)
+            cmd3.Parameters.AddWithValue("@sampai", sampai)
+            Dim reader3 = cmd3.ExecuteReader()
+            If reader3.Read() Then
+                pengeluaran = CDec(reader3("total_pengeluaran"))
+            End If
+            reader3.Close()
+
+            Dim query4 As String = "SELECT COALESCE(SUM(total_bayar), 0) as total_void " &
+                "FROM tbl_transaksi WHERE DATE(tanggal) BETWEEN @dari AND @sampai AND status = 'void'"
+            Dim cmd4 As New MySqlCommand(query4, connection)
+            cmd4.Parameters.AddWithValue("@dari", dari)
+            cmd4.Parameters.AddWithValue("@sampai", sampai)
+            Dim reader4 = cmd4.ExecuteReader()
+            If reader4.Read() Then
+                void = CDec(reader4("total_void"))
+            End If
+            reader4.Close()
+
+            connection.Close()
+
+            Dim labaKotor As Decimal = pendapatan - hpp
+            Dim labaBersih As Decimal = labaKotor - pengeluaran
+
+            UpdateNeracaCards(pendapatan, hpp, labaKotor, pengeluaran, labaBersih, void, jumlahTransaksi)
+
+        Catch ex As Exception
+            MsgBox("Error menghitung neraca: " & ex.Message, MsgBoxStyle.Critical)
+        End Try
+    End Sub
+
+    Private Sub UpdateNeracaCards(pendapatan As Decimal, hpp As Decimal, labaKotor As Decimal, pengeluaran As Decimal, labaBersih As Decimal, void As Decimal, jumlahTransaksi As Integer)
+        lblNeracaPendapatan.Text = "Rp " & pendapatan.ToString("N0")
+        lblNeracaPendapatanSub.Text = jumlahTransaksi & " transaksi"
+
+        lblNeracaHPP.Text = "Rp " & hpp.ToString("N0")
+        lblNeracaHPPSub.Text = "Dari transaksi aktif"
+
+        lblNeracaLabaKotor.Text = "Rp " & labaKotor.ToString("N0")
+        lblNeracaLabaKotorSub.Text = "Pendapatan - HPP"
+
+        lblNeracaPengeluaran.Text = "Rp " & pengeluaran.ToString("N0")
+
+        lblNeracaLabaBersih.Text = "Rp " & labaBersih.ToString("N0")
+        If labaBersih >= 0 Then
+            lblNeracaLabaBersih.ForeColor = Color.FromArgb(34, 197, 94)
+        Else
+            lblNeracaLabaBersih.ForeColor = Color.FromArgb(220, 38, 38)
+        End If
+
+        lblNeracaVoid.Text = "Rp " & void.ToString("N0")
+        lblNeracaVoidSub.Text = "Informasi tambahan"
+    End Sub
+
+    Private Sub btnKelolaPengeluaran_Click(sender As Object, e As EventArgs) Handles btnKelolaPengeluaran.Click
+        If SessionHelper.Role <> "Admin" Then
+            MsgBox("Hanya Admin yang dapat mengelola pengeluaran", MsgBoxStyle.Information)
+            Return
+        End If
+
+        Dim pengeluaranForm As New FrmPengeluaran()
+        pengeluaranForm.ShowDialog()
+        HitungNeraca()
+    End Sub
+
+    Private Sub btnExportNeraca_Click(sender As Object, e As EventArgs) Handles btnExportNeraca.Click
+        ExportNeracaToCSV()
+    End Sub
+
+    Private Sub ExportNeracaToCSV()
+        Try
+            Dim saveDialog As New SaveFileDialog()
+            saveDialog.Filter = "CSV Files (*.csv)|*.csv"
+            saveDialog.FileName = "Neraca_Keuangan_" & DateTime.Now.ToString("yyyyMMdd_HHmmss") & ".csv"
+            saveDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+
+            If saveDialog.ShowDialog() = DialogResult.OK Then
+                Using writer As New System.IO.StreamWriter(saveDialog.FileName)
+                    writer.WriteLine("KasirIn - Neraca Keuangan")
+                    writer.WriteLine("Periode: " & dtpNeracaDari.Value.ToString("dd/MM/yyyy") & " - " & dtpNeracaSampai.Value.ToString("dd/MM/yyyy"))
+                    writer.WriteLine("")
+                    writer.WriteLine("Komponen,Nilai")
+                    writer.WriteLine("Total Pendapatan Kotor," & lblNeracaPendapatan.Text)
+                    writer.WriteLine("Harga Pokok Penjualan (HPP)," & lblNeracaHPP.Text)
+                    writer.WriteLine("Laba Kotor," & lblNeracaLabaKotor.Text)
+                    writer.WriteLine("Total Pengeluaran Operasional," & lblNeracaPengeluaran.Text)
+                    writer.WriteLine("Laba Bersih," & lblNeracaLabaBersih.Text)
+                    writer.WriteLine("Total Void / Retur," & lblNeracaVoid.Text)
+                End Using
+
+                MsgBox("Neraca berhasil diekspor ke: " & saveDialog.FileName, MsgBoxStyle.Information)
+            End If
+
+        Catch ex As Exception
+            MsgBox("Error export: " & ex.Message, MsgBoxStyle.Critical)
+        End Try
+    End Sub
+
+    Private Sub btnPrintNeraca_Click(sender As Object, e As EventArgs) Handles btnPrintNeraca.Click
+        PrintNeraca()
+    End Sub
+
+    Private Sub PrintNeraca()
+        Try
+            Dim printDoc As New Printing.PrintDocument()
+            AddHandler printDoc.PrintPage, AddressOf PrintDocument_PrintPageNeraca
+            printDoc.Print()
+        Catch ex As Exception
+            MsgBox("Error printing: " & ex.Message, MsgBoxStyle.Critical)
+        End Try
+    End Sub
+
+    Private Sub PrintDocument_PrintPageNeraca(sender As Object, e As Printing.PrintPageEventArgs)
+        Dim font As New System.Drawing.Font("Courier New", 10)
+        Dim boldFont As New System.Drawing.Font("Courier New", 11, System.Drawing.FontStyle.Bold)
+        Dim y As Single = 50
+        Dim x As Single = 50
+
+        e.Graphics.DrawString("KasirIn", boldFont, Brushes.Black, x + 150, y)
+        y += 25
+        e.Graphics.DrawString("Neraca Keuangan", boldFont, Brushes.Black, x + 130, y)
+        y += 25
+        e.Graphics.DrawString("================================", font, Brushes.Black, x, y)
+        y += 20
+
+        e.Graphics.DrawString("Periode: " & dtpNeracaDari.Value.ToString("dd/MM/yyyy") & " - " & dtpNeracaSampai.Value.ToString("dd/MM/yyyy"), font, Brushes.Black, x, y)
+        y += 20
+        e.Graphics.DrawString("--------------------------------", font, Brushes.Black, x, y)
+        y += 20
+
+        e.Graphics.DrawString("Pendapatan Kotor  : " & lblNeracaPendapatan.Text, font, Brushes.Black, x, y)
+        y += 15
+        e.Graphics.DrawString("HPP               : " & lblNeracaHPP.Text, font, Brushes.Black, x, y)
+        y += 15
+        e.Graphics.DrawString("                    --------", font, Brushes.Black, x, y)
+        y += 15
+        e.Graphics.DrawString("Laba Kotor        : " & lblNeracaLabaKotor.Text, font, Brushes.Black, x, y)
+        y += 15
+        e.Graphics.DrawString("Pengeluaran       : " & lblNeracaPengeluaran.Text, font, Brushes.Black, x, y)
+        y += 15
+        e.Graphics.DrawString("                    --------", font, Brushes.Black, x, y)
+        y += 15
+
+        Dim labaBersihFont As New System.Drawing.Font("Courier New", 11, System.Drawing.FontStyle.Bold)
+        e.Graphics.DrawString("LABA BERSIH       : " & lblNeracaLabaBersih.Text, labaBersihFont, Brushes.Black, x, y)
+        y += 20
+        e.Graphics.DrawString("================================", font, Brushes.Black, x, y)
+        y += 20
+        e.Graphics.DrawString("Void/Retur        : " & lblNeracaVoid.Text, font, Brushes.Black, x, y)
+        y += 15
+        e.Graphics.DrawString("================================", font, Brushes.Black, x, y)
+
+        e.HasMorePages = False
+    End Sub
+
+    Private Sub LoadFilterAksi()
+        cmbFilterAksi.Items.Clear()
+        cmbFilterAksi.Items.Add("Semua")
+        cmbFilterAksi.Items.Add("Login")
+        cmbFilterAksi.Items.Add("Logout")
+        cmbFilterAksi.Items.Add("Transaksi")
+        cmbFilterAksi.Items.Add("Void")
+        cmbFilterAksi.Items.Add("Tambah Produk")
+        cmbFilterAksi.Items.Add("Edit Produk")
+        cmbFilterAksi.Items.Add("Hapus Produk")
+        cmbFilterAksi.Items.Add("Kelola Kategori")
+        cmbFilterAksi.Items.Add("Kelola Supplier")
+        cmbFilterAksi.SelectedIndex = 0
+    End Sub
+
+    Private Sub btnTampilkanLog_Click(sender As Object, e As EventArgs) Handles btnTampilkanLog.Click
+        LoadLogAktivitas()
+    End Sub
+
+    Private Sub LoadLogAktivitas()
+        Try
+            Dim connection As MySqlConnection = DBConnection.GetConnection()
+            If connection Is Nothing Then Return
+
+            Dim dari As String = dtpLogDari.Value.ToString("yyyy-MM-dd")
+            Dim sampai As String = dtpLogSampai.Value.ToString("yyyy-MM-dd")
+            Dim filterAksi As String = cmbFilterAksi.SelectedItem.ToString()
+
+            Dim query As String = "SELECT l.id_log, l.waktu, u.username, u.nama_lengkap, " &
+                "l.aksi, l.keterangan, l.ip_address " &
+                "FROM tbl_log_aktivitas l " &
+                "JOIN tbl_user u ON l.id_user = u.id_user " &
+                "WHERE DATE(l.waktu) BETWEEN @dari AND @sampai "
+
+            If filterAksi <> "Semua" Then
+                query &= "AND l.aksi = @aksi "
+            End If
+
+            query &= "ORDER BY l.waktu DESC"
+
+            Dim adapter As New MySqlDataAdapter(query, connection)
+            adapter.SelectCommand.Parameters.AddWithValue("@dari", dari)
+            adapter.SelectCommand.Parameters.AddWithValue("@sampai", sampai)
+
+            If filterAksi <> "Semua" Then
+                adapter.SelectCommand.Parameters.AddWithValue("@aksi", filterAksi)
+            End If
+
+            Dim table As New DataTable()
+            adapter.Fill(table)
+
+            dgvLog.DataSource = table
+
+            If dgvLog.Columns.Count > 0 Then
+                dgvLog.Columns(0).Visible = False
+                dgvLog.Columns(1).HeaderText = "Waktu"
+                dgvLog.Columns(2).HeaderText = "Username"
+                dgvLog.Columns(3).HeaderText = "Nama Lengkap"
+                dgvLog.Columns(4).HeaderText = "Aksi"
+                dgvLog.Columns(5).HeaderText = "Keterangan"
+                dgvLog.Columns(6).HeaderText = "IP Address"
+
+                dgvLog.AutoResizeColumns()
+
+                For i = 0 To dgvLog.Rows.Count - 1
+                    Dim aksi As String = dgvLog.Rows(i).Cells(4).Value.ToString()
+                    Select Case aksi
+                        Case "Login", "Logout"
+                            dgvLog.Rows(i).DefaultCellStyle.BackColor = Color.FromArgb(219, 234, 254)
+                        Case "Transaksi"
+                            dgvLog.Rows(i).DefaultCellStyle.BackColor = Color.FromArgb(220, 252, 231)
+                        Case "Void"
+                            dgvLog.Rows(i).DefaultCellStyle.BackColor = Color.FromArgb(254, 226, 226)
+                        Case Else
+                            dgvLog.Rows(i).DefaultCellStyle.BackColor = Color.FromArgb(254, 243, 224)
+                    End Select
+                Next
+            End If
+
+            lblLogSummary.Text = "Total Log: " & table.Rows.Count
+
+            connection.Close()
+
+        Catch ex As Exception
+            MsgBox("Error loading log: " & ex.Message, MsgBoxStyle.Critical)
+        End Try
+    End Sub
+
+    Private Sub btnExportLog_Click(sender As Object, e As EventArgs) Handles btnExportLog.Click
+        ExportToCSV(dgvLog, "Log_Aktivitas")
     End Sub
 End Class
