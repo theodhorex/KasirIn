@@ -464,6 +464,13 @@ Public Class FrmKasir
                 Next
 
                 transaction.Commit()
+                Dim totalHargaCalc As Decimal = 0
+                For Each item In cartItems
+                    totalHargaCalc += (item.hargaSatuan * item.qty) - item.diskonItem
+                Next
+                Dim diskonTotalCalc As Decimal = If(IsNumeric(txtDiskonTotal.Text), CDec(txtDiskonTotal.Text), 0)
+                Dim totalBayarCalc As Decimal = totalHargaCalc - diskonTotalCalc
+                LogHelper.CatatLog("Transaksi", "Transaksi " & noTransaksi & " berhasil disimpan, total: Rp " & totalBayarCalc.ToString("N0"))
                 MsgBox("Transaksi " & noTransaksi & " berhasil disimpan", MsgBoxStyle.Information)
                 Return True
 
