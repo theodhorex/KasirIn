@@ -171,6 +171,8 @@ Public Class FrmSupplierDetail
             command.ExecuteNonQuery()
             connection.Close()
 
+            LogHelper.CatatLog("Kelola Supplier", "Aksi: Tambah - " & txtNama.Text.Trim())
+
             MsgBox("Supplier berhasil ditambahkan", MsgBoxStyle.Information)
             Me.Close()
 
@@ -200,6 +202,8 @@ Public Class FrmSupplierDetail
 
             command.ExecuteNonQuery()
             connection.Close()
+
+            LogHelper.CatatLog("Kelola Supplier", "Aksi: Edit - " & txtNama.Text.Trim())
 
             MsgBox("Supplier berhasil diperbarui", MsgBoxStyle.Information)
             Me.Close()

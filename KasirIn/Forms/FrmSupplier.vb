@@ -177,10 +177,25 @@ Public Class FrmSupplier
             Dim connection As MySqlConnection = DBConnection.GetConnection()
             If connection Is Nothing Then Return
 
+            Dim getNamaQuery As String = "SELECT nama_supplier, is_active FROM tbl_supplier WHERE id_supplier = @id"
+            Dim getNamaCmd As New MySqlCommand(getNamaQuery, connection)
+            getNamaCmd.Parameters.AddWithValue("@id", idSupplier)
+            Dim reader As MySqlDataReader = getNamaCmd.ExecuteReader()
+            Dim namaSupplier As String = ""
+            Dim currentStatus As Integer = 0
+            If reader.Read() Then
+                namaSupplier = reader("nama_supplier").ToString()
+                currentStatus = CInt(reader("is_active"))
+            End If
+            reader.Close()
+
             Dim query As String = "UPDATE tbl_supplier SET is_active = CASE WHEN is_active = 1 THEN 0 ELSE 1 END WHERE id_supplier = @id"
             Dim command As New MySqlCommand(query, connection)
             command.Parameters.AddWithValue("@id", idSupplier)
             command.ExecuteNonQuery()
+
+            Dim newStatus As String = If(currentStatus = 1, "Nonaktif", "Aktif")
+            LogHelper.CatatLog("Kelola Supplier", "Aksi: Toggle - " & namaSupplier & " menjadi " & newStatus)
 
             connection.Close()
             LoadSupplier()
