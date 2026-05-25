@@ -155,10 +155,17 @@ Public Class FrmProduk
             Dim connection As MySqlConnection = DBConnection.GetConnection()
             If connection Is Nothing Then Return
 
+            Dim getNamaQuery As String = "SELECT nama_produk FROM tbl_produk WHERE id_produk = @idProduk"
+            Dim getNamaCmd As New MySqlCommand(getNamaQuery, connection)
+            getNamaCmd.Parameters.AddWithValue("@idProduk", idProduk)
+            Dim namaProduk As String = getNamaCmd.ExecuteScalar().ToString()
+
             Dim query As String = "UPDATE tbl_produk SET is_active = 0 WHERE id_produk = @idProduk"
             Dim command As New MySqlCommand(query, connection)
             command.Parameters.AddWithValue("@idProduk", idProduk)
             command.ExecuteNonQuery()
+
+            LogHelper.CatatLog("Hapus Produk", "Produk dinonaktifkan: " & namaProduk)
 
             connection.Close()
             MsgBox("Produk berhasil dihapus", MsgBoxStyle.Information)

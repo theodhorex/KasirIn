@@ -181,6 +181,8 @@ Public Class FrmProdukDetail
             command.ExecuteNonQuery()
             connection.Close()
 
+            LogHelper.CatatLog("Tambah Produk", "Produk baru ditambahkan: " & txtNama.Text)
+
             MsgBox("Produk berhasil ditambahkan", MsgBoxStyle.Information)
             Me.DialogResult = DialogResult.OK
             Me.Close()
@@ -220,6 +222,8 @@ Public Class FrmProdukDetail
 
             command.ExecuteNonQuery()
             connection.Close()
+
+            LogHelper.CatatLog("Edit Produk", "Produk diupdate: " & txtNama.Text)
 
             MsgBox("Produk berhasil diperbarui", MsgBoxStyle.Information)
             Me.DialogResult = DialogResult.OK
